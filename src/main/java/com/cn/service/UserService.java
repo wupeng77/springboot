@@ -9,4 +9,18 @@ public interface UserService {
      * @return
      */
     public Suser getUserInfo(String userId);
+
+    /**
+     *
+     * @param userDto
+     * @return
+     */
+    public boolean loginCheck(Suser userDto);
+
+    /**
+     *
+     * @param user
+     * @return
+     */
+    public int insertUser(Suser user);
 }

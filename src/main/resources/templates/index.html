@@ -6,9 +6,9 @@
 </head>
 <body>
 <div style="background: darkgray">
-    <form action="/user/login">
-        用户名：<input type="text" id="username" /><br>
-        密码：<input type="password" id="password"/><br>
+    <form action="/user/loginCheck" method="post">
+        用户名：<input type="text" name="username" /><br>
+        密码：<input type="password" name="password"/><br>
               <input type="submit" value="提交！" />
     </form>
 </div>

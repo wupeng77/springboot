@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -21,23 +19,55 @@ public class UserController {
     @Autowired
     private UserService  userService;
     @Autowired
-    private StringRedisTemplate strRedis;
-    @Autowired
     private RedisTemplate  redisTemplate;
 
-    @GetMapping("/login")
+    /**
+     * 准备登陆页面
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
     public ModelAndView getUserInfo(String userId){
         ModelAndView mv = new ModelAndView();
         mv.setViewName("index");
-        logger.info("info--日志开始");
-        Suser user = userService.getUserInfo(userId);
-//        strRedis.opsForSet().add("1234","1234");
-        redisTemplate.opsForValue().set(userId,userId);
-        System.out.print(strRedis.opsForValue().get("wpeng")+"---");
-        mv.addObject(user);
-        logger.info("info--日志结束");
-        logger.warn("警告！");
-        logger.debug("debug!");
+        logger.info("mv",mv);
         return  mv;
+    }
+
+    /**
+     * 登陆检验
+     * @param userDto
+     * @return
+     */
+    @RequestMapping(value = "/loginCheck",method = RequestMethod.POST)
+    public ModelAndView loginCheck(@ModelAttribute Suser userDto){
+
+        ModelAndView mv = new ModelAndView();
+        boolean loginFlag = userService.loginCheck(userDto);
+
+        if (loginFlag){
+            mv.setViewName("success");
+        }else {
+            mv.setViewName("index");
+        }
+        return mv;
+    }
+
+    /**
+     * 注册用户
+     * @param userDto
+     * @return
+     */
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    public ModelAndView registerUser(@ModelAttribute Suser userDto){
+        ModelAndView mv = new ModelAndView();
+        int successFlag = userService.insertUser(userDto);
+
+        if ("1".equals(successFlag)){
+            mv.setViewName("success");
+        }else {
+            mv.setViewName("index");
+        }
+        return mv;
     }
 }
