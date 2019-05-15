@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -19,7 +20,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RedisTemplate redisTemplate;
-
     /**
      * 准备登陆页面
      *
@@ -65,10 +65,10 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         int successFlag = userService.insertUser(userDto);
 
-        if ("1".equals(successFlag)) {
+        if (1 == successFlag) {
             mv.setViewName("success");
         } else {
-            mv.setViewName("index");
+            mv.setViewName("register");
         }
         return mv;
     }

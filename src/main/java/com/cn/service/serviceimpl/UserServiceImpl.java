@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -48,6 +49,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insertUser(Suser user) {
+        //以时间作为用户id
+        Long userId = new Date().getTime();
+        user.setUserid(userId.toString());
         return suserMapper.insert(user);
     }
 }
